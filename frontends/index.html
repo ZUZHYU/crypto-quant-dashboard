@@ -41,7 +41,7 @@
 
 <script>
 async function loadData() {
-  const res = await fetch("http://127.0.0.1:8000/crypto");
+  const res = await fetch("/crypto");
   const data = await res.json();
 
   Plotly.newPlot("chart", [{
