@@ -5,7 +5,17 @@ import ccxt
 import numpy as np
 from datetime import datetime
 
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+from fastapi import Request
+
+templates = Jinja2Templates(directory="frontends")
+
 app = FastAPI()
+
+@app.get("/", response_class=HTMLResponse)
+def home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 # Allow frontend requests
 app.add_middleware(
