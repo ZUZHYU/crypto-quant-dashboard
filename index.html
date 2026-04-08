@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Crypto Quant Dashboard</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body {
+      background: #0b0f1a;
+      color: #e6e6e6;
+      font-family: Arial;
+      padding: 40px;
+    }
+    .card {
+      background: #121826;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🚀 Crypto Quant Strategies</h1>
+<p>Live systematic trading performance (BTC, ETH, Altcoins)</p>
+
+<div class="card">
+  <h2>📈 Equity Curve</h2>
+  <div id="chart"></div>
+</div>
+
+<div class="card">
+  <h2>📊 Metrics</h2>
+  <p id="metrics"></p>
+</div>
+
+<div class="card">
+  <h2>💰 Market Prices</h2>
+  <p id="prices"></p>
+</div>
+
+<script>
+async function loadData() {
+  const res = await fetch("http://127.0.0.1:8000/crypto");
+  const data = await res.json();
+
+  Plotly.newPlot("chart", [{
+    y: data.equity,
+    type: "scatter"
+  }]);
+
+  document.getElementById("metrics").innerHTML =
+    `Sharpe: ${data.sharpe}<br>
+     Drawdown: ${data.drawdown}`;
+
+  document.getElementById("prices").innerHTML =
+    `BTC: $${data.btc}<br>
+     ETH: $${data.eth}`;
+}
+
+loadData();
+setInterval(loadData, 5000);
+</script>
+
+</body>
+</html>
